@@ -1,11 +1,38 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import axios from 'axios';
 
 const AuthModal = ({ show, handleClose }) => {
   const [isSignup, setIsSignup] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
+  const [error, setError] = useState(null);
 
   const toggleAuthMode = () => {
     setIsSignup(!isSignup);
+  };
+
+  const loginUser = async (event) => {
+    event.preventDefault();
+
+    try {
+      if (isSignup) {
+        // Create new user (Sign Up)
+        const response = await axios.post('http://localhost:5000/api/users/signup', { username: name, email, password, role });
+        console.log('User signed up successfully:', response);
+      } else {
+        // Log in existing user
+        const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
+        console.log('User logged in successfully:', response.data);
+      }
+
+      handleClose(); // Close the modal on success
+    } catch (error) {
+      console.error('Error during authentication:', error.response ? error.response.data : error.message);
+      setError(error.response ? error.response.data : "An error occurred");
+    }
   };
 
   return (
@@ -14,19 +41,19 @@ const AuthModal = ({ show, handleClose }) => {
         <Modal.Title>{isSignup ? 'Sign Up' : 'Login'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={loginUser}>
           {isSignup && (
             <>
               {/* Name Field */}
               <Form.Group controlId="formBasicName">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter your name" />
+                <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" required />
               </Form.Group>
 
               {/* Role Dropdown */}
               <Form.Group controlId="formBasicRole">
                 <Form.Label>Role</Form.Label>
-                <Form.Control as="select" defaultValue="Select Role">
+                <Form.Control as="select" value={role} onChange={(e) => setRole(e.target.value)} required>
                   <option disabled>Select Role</option>
                   <option>Manager</option>
                   <option>Boss</option>
@@ -45,22 +72,16 @@ const AuthModal = ({ show, handleClose }) => {
           {/* Email Field */}
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" required />
           </Form.Group>
 
           {/* Password Field */}
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Enter password" />
+            <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" required />
           </Form.Group>
 
-          {/* Confirm Password Field (Only for Signup) */}
-          {isSignup && (
-            <Form.Group controlId="formBasicPasswordConfirm">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Confirm password" />
-            </Form.Group>
-          )}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
 
           {/* Account Status Toggle Text */}
           <div className="text-center mt-3">

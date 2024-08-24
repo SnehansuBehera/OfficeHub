@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const navbar = document.querySelector('.animated-navbar');
     setTimeout(() => {
-      navbar.classList.add('show');
+      // navbar.classList.add('show');
     }, 100); // Delay to ensure smooth transition
   }, []);
 

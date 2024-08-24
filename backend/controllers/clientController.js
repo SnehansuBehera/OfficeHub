@@ -3,6 +3,7 @@ import Client from "../models/clientModel.js";
 // Create a new client
 const createClient = async (req, res) => {
     const { client_name, client_mail, client_Address, client_img } = req.body;
+
     if (!client_name || !client_mail || !client_Address || !client_img) {
         return res.status(400).json({ message: "Please provide all required information" });
     }

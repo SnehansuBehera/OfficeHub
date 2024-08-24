@@ -46,13 +46,23 @@ function AddClient() {
                     />
                   </div>
                   <div className="col-md-6">
-                    <label htmlFor="inputPassword4" className="form-label">
-                      Password
+                    <label htmlFor="inputName4" className="form-label">
+                      Name
                     </label>
                     <input
-                      type="password"
+                      type="text"
                       className="form-control"
-                      id="inputPassword4"
+                      id="inputName4"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="inputProject4" className="form-label">
+                      Project
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="inputProject4"
                     />
                   </div>
                   <div className="col-12">
@@ -63,44 +73,8 @@ function AddClient() {
                       type="text"
                       className="form-control"
                       id="inputAddress"
-                      placeholder="1234 Main St"
+                      placeholder="Add Address"
                     />
-                  </div>
-                  <div className="col-12">
-                    <label htmlFor="inputAddress2" className="form-label">
-                      Address 2
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="inputAddress2"
-                      placeholder="Apartment, studio, or floor"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label htmlFor="inputCity" className="form-label">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="inputCity"
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="inputState" className="form-label">
-                      State
-                    </label>
-                    <select id="inputState" className="form-select">
-                      <option selected>Choose...</option>
-                      <option>...</option>
-                    </select>
-                  </div>
-                  <div className="col-md-2">
-                    <label htmlFor="inputZip" className="form-label">
-                      Zip
-                    </label>
-                    <input type="text" className="form-control" id="inputZip" />
                   </div>
                 </form>
               </div>

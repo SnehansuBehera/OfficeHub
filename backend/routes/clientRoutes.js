@@ -3,7 +3,7 @@ import { createClient, updateClient, deleteClient, allClients, clientById } from
 import { authenticate, authorizeAsAdmin } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
-router.get('/allClients', authenticate, authorizeAsAdmin, allClients);
+router.get('/allClients', allClients);
 router.get('/client/:id', authenticate, authorizeAsAdmin, clientById);
 router.route('/createClient').post(authenticate, authorizeAsAdmin, createClient);
 router.route('/updateClient/:id').put(authenticate, authorizeAsAdmin, updateClient);

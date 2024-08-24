@@ -14,6 +14,9 @@ const HeroSection = ({ handleShow }) => {
   const direct = () => {
     navigate('/admin/dashboard');
   }
+  const directEmployee = () => {
+    navigate('/employee/dashboard');
+  }
   return (
     <header className="bg-light min-vh-100 d-flex align-items-center justify-content-center">
       <div className="container text-center">
@@ -21,7 +24,7 @@ const HeroSection = ({ handleShow }) => {
         <p className="lead">Our office management system streamlines workflows and enhances productivity.</p>
         {user ?
           <>
-            {admin ? <Button variant="success" size="lg" onClick={direct}>Dashboard</Button> : <Button variant="success" size="lg" onClick={handleShow}>Dashboard</Button>}
+            {admin ? <Button variant="success" size="lg" onClick={direct}>Dashboard</Button> : <Button variant="success" size="lg" onClick={directEmployee}>Dashboard</Button>}
           </> :
           <Button variant="success" size="lg" onClick={handleShow}>Get Started</Button>
         }

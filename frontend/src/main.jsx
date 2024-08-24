@@ -7,6 +7,7 @@ import { Route, RouterProvider, createRoutesFromElements } from 'react-router';
 import { createBrowserRouter } from "react-router-dom";
 import DashboardAdmin from './components/DashboardAdmin.jsx';
 import AdminDashboard from './components/adminDashboard.jsx';
+import EmployeeDashboard from './components/EmployeeDashboard.jsx';
 
 // import AuthProvider from './context/AuthContext.jsx';
 const router = createBrowserRouter(
@@ -14,6 +15,7 @@ const router = createBrowserRouter(
     <>
       <Route path='/' element={<App />} />
       <Route path='/admin/dashboard' element={<AdminDashboard />} />
+      <Route path='/employee/dashboard' element={<EmployeeDashboard />} />
     </>
   )
 )

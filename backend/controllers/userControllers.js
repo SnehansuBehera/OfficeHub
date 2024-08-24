@@ -82,24 +82,14 @@ const logout = async (req, res) => {
     })
     res.status(201).send("User logged out");
 }
-// const checkAuth = async (req, res) => {
-//     const token = req.cookies.jwt;
-//     if (!token) {
-//         return res.status(401).json({ message: 'Not authenticated' });
-//     }
-
-//     try {
-//         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-//         const user = await User.findById(decoded.userId).select('-password');
-//         if (!user) {
-//             return res.status(401).json({ message: 'User not found' });
-//         }
-//         res.status(200).json(user);
-//     } catch (error) {
-//         res.status(401).json({ message: 'Invalid token' });
-//     }
-// };
-
-export { createUser, login, logout };
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).send("Failed to fetch users");
+    }
+};
+export { createUser, login, logout, getUsers };
 
 

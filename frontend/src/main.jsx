@@ -6,13 +6,14 @@ import './index.css';
 import { Route, RouterProvider, createRoutesFromElements } from 'react-router';
 import { createBrowserRouter } from "react-router-dom";
 import DashboardAdmin from './components/DashboardAdmin.jsx';
+import AdminDashboard from './components/adminDashboard.jsx';
 
 // import AuthProvider from './context/AuthContext.jsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path='/' element={<App />} />
-      <Route path='/admin/dashboard' element={<DashboardAdmin />} />
+      <Route path='/admin/dashboard' element={<AdminDashboard />} />
     </>
   )
 )

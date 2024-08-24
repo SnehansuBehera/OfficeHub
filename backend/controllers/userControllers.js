@@ -4,9 +4,19 @@ import bcrypt from "bcryptjs"
 
 const createUser = async (req, res) => {
     const { username, email, password, role } = req.body;
-    if (!username || !email || !password || !role) {
-        throw new Error("Please provide all info");
+    if (!username) {
+        throw new Error("Please provide name");
     }
+    if (!email) {
+        throw new Error("Please provide email");
+    }
+    if (!password) {
+        throw new Error("Please provide password");
+    }
+    if (!role) {
+        throw new Error("Please provide role");
+    }
+
     const alreadyExists = await User.findOne({ email });
     if (alreadyExists) {
         res.status(400).send("User already exists");
@@ -28,6 +38,7 @@ const createUser = async (req, res) => {
             email: newUser.email,
             role: newUser.role,
             isAdmin: newUser.isAdmin
+
         })
     } catch (error) {
         res.status(500);

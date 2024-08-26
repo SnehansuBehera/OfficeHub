@@ -1,6 +1,9 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import { useLoginMutation, useRegisterMutation } from '../redux/api/userApiSlice';
+import Loader from '../assets/Loader';
+import { useDispatch } from 'react-redux';
+import { setcredentials } from '../redux/features/auth/authSlice';
 
 const AuthModal = ({ show, handleClose }) => {
   const [isSignup, setIsSignup] = useState(true);
@@ -9,33 +12,40 @@ const AuthModal = ({ show, handleClose }) => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
   const [error, setError] = useState(null);
+  const [login, { isLoading }] = useLoginMutation();
+  const [register] = useRegisterMutation();
+
+
 
   const toggleAuthMode = () => {
     setIsSignup(!isSignup);
   };
 
+  const dispatch = useDispatch();
+
   const loginUser = async (event) => {
     event.preventDefault();
-
     try {
       if (isSignup) {
-        // Create new user (Sign Up)
-        const response = await axios.post('http://localhost:5000/api/users/signup', { username: name, email, password, role });
-        localStorage.setItem("user", JSON.stringify(response.data));
+        const response = await register({ username: name, email, password, role }).unwrap();
         console.log('User signed up successfully:', response);
-      } else {
-        // Log in existing user
-        const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
-        localStorage.setItem("users", JSON.stringify(response.data));
-        console.log('User logged in successfully:', response.data);
-      }
+        dispatch(setcredentials({ ...response }));
 
-      handleClose(); // Close the modal on success
+      } else {
+        const response = await login({ email, password }).unwrap();
+        console.log('User logged in successfully:', response);
+        dispatch(setcredentials({ ...response }));
+      }
+      handleClose();
     } catch (error) {
       console.error('Error during authentication:', error.response ? error.response.data : error.message);
       setError(error.response ? error.response.data : "An error occurred");
     }
   };
+
+
+
+
 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -46,13 +56,10 @@ const AuthModal = ({ show, handleClose }) => {
         <Form onSubmit={loginUser}>
           {isSignup && (
             <>
-              {/* Name Field */}
               <Form.Group controlId="formBasicName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" required />
               </Form.Group>
-
-              {/* Role Dropdown */}
               <Form.Group controlId="formBasicRole">
                 <Form.Label>Role</Form.Label>
                 <Form.Control as="select" value={role} onChange={(e) => setRole(e.target.value)} required>
@@ -70,22 +77,15 @@ const AuthModal = ({ show, handleClose }) => {
               </Form.Group>
             </>
           )}
-
-          {/* Email Field */}
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" required />
           </Form.Group>
-
-          {/* Password Field */}
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" required />
           </Form.Group>
-
           {error && <p style={{ color: 'red' }}>{error}</p>}
-
-          {/* Account Status Toggle Text */}
           <div className="text-center mt-3">
             {isSignup ? (
               <>
@@ -108,9 +108,10 @@ const AuthModal = ({ show, handleClose }) => {
             )}
           </div>
 
-          {/* Submit Button */}
+
           <Button variant="primary" type="submit" className="w-100 mt-3">
-            {isSignup ? 'Sign Up' : 'Login'}
+            {!isLoading ? (isSignup ? 'Sign Up' : 'Login') : <Loader />}
+
           </Button>
         </Form>
       </Modal.Body>
